@@ -7,7 +7,7 @@ import 'package:alemeno/widgets/popular_package.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List cartItems = [];
+
   void addToCart(Test item) {
     setState(() {
       cartItems.add(item);
@@ -26,91 +27,132 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        shadowColor: Colors.transparent,
-        title: const Text(
-          "Logo",
-          style: TextStyle(color: Colors.black,),
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MyCart(cartItems: cartItems)),
-              );
-            },
-            icon: const Icon(Icons.shopping_cart, color: Colors.black),
-          ),
-        ],
-      ),
+      appBar: buildAppBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Popular Lab Tests",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(16, 33, 125, 1),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text("View More", style: TextStyle(color: Color.fromRGBO(16, 33, 125, 1),decoration: TextDecoration.underline)),
-                  )
-                ],
+            buildPopularTestsSection(),
+            buildPopularPackagesSection(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      shadowColor: Colors.transparent,
+      title: const Text(
+        "Logo",
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyCart(cartItems: cartItems),
               ),
-            ),
-            GridView(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.7,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-              ),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                for (final test in popularTests)
-                  GridItem(
-                    item: test,
-                    addToCart: addToCart,
-                  )
-              ],
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              child: Text(
-                "Popular Packages",
+            );
+          },
+          icon: const Icon(Icons.shopping_cart, color: Colors.black),
+        ),
+      ],
+    );
+  }
+
+  Widget buildPopularTestsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Popular Lab Tests",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Color.fromRGBO(16, 33, 125, 1),
                 ),
               ),
-            ),
-            for (final package in popularPackages)
-              Center(
-                child: PopularPackage(
-                  title: package.title,
-                  noTests: package.noTests,
-                  expense: package.expense,
+              TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "View More",
+                  style: TextStyle(
+                    color: Color.fromRGBO(16, 33, 125, 1),
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
-          ],
+            ],
+          ),
         ),
+        buildPopularTestsGrid(),
+      ],
+    );
+  }
+
+  Widget buildPopularTestsGrid() {
+    return GridView(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.7,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
       ),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: popularTests.map((test) {
+        return GridItem(
+          item: test,
+          addToCart: addToCart,
+        );
+      }).toList(),
+    );
+  }
+
+  Widget buildPopularPackagesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+          child: Text(
+            "Popular Packages",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(16, 33, 125, 1),
+            ),
+          ),
+        ),
+        buildPopularPackages(),
+      ],
+    );
+  }
+
+  Widget buildPopularPackages() {
+    return Column(
+      children: popularPackages.map((package) {
+        return Center(
+          child: PopularPackage(
+            title: package.title,
+            noTests: package.noTests,
+            expense: package.expense,
+          ),
+        );
+      }).toList(),
     );
   }
 }

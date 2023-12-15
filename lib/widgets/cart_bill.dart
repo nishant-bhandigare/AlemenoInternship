@@ -19,37 +19,47 @@ class CartBill extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("M.R.P. Total"),
-              Text('${totalExpense + 400}'), // Corrected this line to convert totalExpense to a string
-            ],
-          ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Discount"),
-              Text("400"),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("Amount to be paid", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color.fromRGBO(16, 33, 125, 1),)),
-              Text("₹ $totalExpense/-", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color.fromRGBO(16, 33, 125, 1),)),
-            ],
-          ),
-          const SizedBox(height: 10,),
-          const Row(
-            children: [
-              Text("Total Savings"),
-              SizedBox(width: 30),
-              Text("₹ 400/-", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color.fromRGBO(16, 33, 125, 1),) ),
-            ],
-          ),
+          buildRow("M.R.P. Total", '${totalExpense}'),
+          buildRow("Discount", totalExpense == 0 ? "₹ 0" : "₹ 400/-"),
+          buildBoldRow("Amount to be paid", totalExpense == 0 ? "₹ 0" : "₹ ${totalExpense - 400}/-"),
+          const SizedBox(height: 10),
+          buildBoldRow("Total Savings", totalExpense == 0 ? "₹ 0" : "₹ 400/-"),
         ],
       ),
+    );
+  }
+
+  Widget buildRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label),
+        Text(value),
+      ],
+    );
+  }
+
+  Widget buildBoldRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            color: Color.fromRGBO(16, 33, 125, 1),
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            color: Color.fromRGBO(16, 33, 125, 1),
+          ),
+        ),
+      ],
     );
   }
 }

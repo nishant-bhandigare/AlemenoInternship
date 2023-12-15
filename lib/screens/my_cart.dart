@@ -26,7 +26,7 @@ class _MyCartState extends State<MyCart> {
       updatedTotalExpense += test.newExpense;
     }
 
-    updatedTotalExpense -= discount;
+    // updatedTotalExpense -= discount;
 
     setState(() {
       totalExpense = updatedTotalExpense;

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class GridItem extends StatelessWidget {
   const GridItem({
-    super.key,
+    Key? key,
     required this.addToCart,
     required this.item,
-  });
+  }) : super(key: key);
 
   final Test item;
   final void Function(Test item) addToCart;
@@ -42,18 +42,24 @@ class GridItem extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 5),
-          Text("Get reports in ${item.delay} hours",
-              style: const TextStyle(fontSize: 10)),
+          Text(
+            "Get reports in ${item.delay} hours",
+            style: const TextStyle(fontSize: 10),
+          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text("₹${item.newExpense}",
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                "₹${item.newExpense}",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(width: 10),
               Text(
                 "₹${item.oldExpense}",
                 style: const TextStyle(
-                    decoration: TextDecoration.lineThrough, fontSize: 10),
+                  decoration: TextDecoration.lineThrough,
+                  fontSize: 10,
+                ),
               ),
             ],
           ),
@@ -63,7 +69,7 @@ class GridItem extends StatelessWidget {
               addToCart(item);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromRGBO(16, 33, 125, 1),
+              primary: const Color.fromRGBO(16, 33, 125, 1),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
@@ -77,7 +83,6 @@ class GridItem extends StatelessWidget {
           OutlinedButton(
             onPressed: () {},
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.black45,
               side: const BorderSide(
                 color: Color.fromRGBO(16, 33, 125, 1),
                 width: 1.0,
@@ -89,7 +94,12 @@ class GridItem extends StatelessWidget {
             child: const SizedBox(
               width: double.infinity,
               height: 40,
-              child: Center(child: Text("View Details", style: TextStyle(color: Colors.black),)),
+              child: Center(
+                child: Text(
+                  "View Details",
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
             ),
           ),
         ],
